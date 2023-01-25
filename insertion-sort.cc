@@ -5,42 +5,45 @@ using std::cin;
 using std::cout;
 using std::endl;
 using std::vector;
+using std::boolalpha;
 
-vector<int> insertion_sort(vector<int> &list);
+int* insertion_sort(int* list, size_t size);
 
 int main (){
+    cout << boolalpha;
 
-    vector<int> vec_list {1,7,3,0,9,2};
+    int arr_list [6] {7,1,3,0,9,2};
 
     cout << "list before sorting : ";
     
-    for (auto const &item: vec_list){
+    for (auto const &item: arr_list){
         cout << item << " " ;
     }
 
     cout << "\n list after sorting : ";
     
-    for (auto const &item: insertion_sort(vec_list)){
-        cout << item << " ";
+
+    for(size_t i{0}; i < 6; i++){
+        cout << insertion_sort(arr_list,6)[i] << " ";
     }
 
     return 0;
 
 }
 
-vector<int> insertion_sort(vector<int> &list){
+int* insertion_sort(int* list, size_t size){
 
-    for(size_t j {1}; j < list.size(); j++){
+    for(size_t j {1}; j < size ; j++){
 
-        int key {list.at(j)};
+        int key {list[j]};
         int i;
 
         i = j - 1;
 
-        while(list.at(i) > key && i > -1){
-            list.at(i + 1) = list.at(i);
+        while(list[i] > key && i > -1){
+            list[i+1] = list[i];
             i--;
-            list.at(i + 1) = key;
+            list[i+1] = key;
         }
 
 
