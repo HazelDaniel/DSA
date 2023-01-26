@@ -1,10 +1,8 @@
 #include <iostream>
-#include <vector>
 
 using std::cin;
 using std::cout;
 using std::endl;
-using std::vector;
 using std::boolalpha;
 
 int* insertion_sort(int* list, size_t size);
