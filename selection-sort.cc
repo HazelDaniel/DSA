@@ -22,9 +22,9 @@ int main (){
     
     int* sorted_arr = selection_sort(arr_list,10);
 
-    // for(size_t i{0}; i < 10; i++){
-    //     cout << selection_sort(arr_list,10)[i] << " ";
-    // }
+    for(size_t i{0}; i < 10; i++){
+        cout << sorted_arr[i] << " ";
+    }
 
     return 0;
 
@@ -32,16 +32,15 @@ int main (){
 
 int* selection_sort(int* list, size_t size){
 
-    for(size_t j {0}; j < size - 1; j++){
+    for(size_t i {0}; i < size - 1; i++){
 
-        int key {list[j]};
-        cout << "key is :" << key << "---" << j << endl;
+        for(size_t j {i + 1}; j < size; j++){
 
-        for(size_t i {j + 1}; i < size; i++){
+            int key {list[i]};
 
-            if(list[i] < key){
-                list[j] = list[i];
-                list[i] = key;
+            if(list[j] < key){
+                list[i] = list[j];
+                list[j] = key;
             }
         }
 
