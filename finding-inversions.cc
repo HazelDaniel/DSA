@@ -16,7 +16,7 @@ void merge(vector<int> &list, size_t s_index, size_t middle, size_t l_index, siz
 int main (){
     cout << boolalpha;
 
-    vector<int> arr_list {7,1,3,0,9,2,4,5};//12 inversions
+    vector<int> arr_list {1,4,0,6,2,8};
 
     size_t inversion {0};
 
@@ -27,7 +27,7 @@ int main (){
     }
 
     cout << "\n list after sorting : ";
-    merge_sort(arr_list,0,7,inversion);
+    merge_sort(arr_list,0,arr_list.size() - 1,inversion);
 
     for(auto const &item: arr_list){
         cout << item << " ";
@@ -71,7 +71,7 @@ void merge(vector<int> &list, size_t s_index, size_t middle, size_t l_index, siz
         if(L.at(i) <= R.at(j)){
             list.at(k) = L.at(i);
 
-            if(k != i && (L.at(i) != R.at(j))){
+            if(k != i ){
                 inv1++;
             }
 
@@ -79,7 +79,7 @@ void merge(vector<int> &list, size_t s_index, size_t middle, size_t l_index, siz
         }else{
             list.at(k) = R.at(j);
 
-            if(k != j + n1 && (L.at(i) != R.at(j))){
+            if(k != j + n1 ){
                 inv2++;
             }
 
