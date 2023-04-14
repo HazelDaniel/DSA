@@ -4,20 +4,22 @@
 
 int *find_max_cross_sum (int *sum_nums, int low, int mid, int high);
 int *find_max_sub_array (int* nums, int low, int high);
+int maxSubArray(int* nums, int numsSize);
 
 int main (void)
 {
-	int nums[] = {-2,1,-3,4,-1,2,1,-5,4};
-	int *max_nums = (int *)malloc(3 * sizeof(int));
-
-	max_nums = find_max_sub_array(nums, 0, 8);
-	printf("the highest sum is :\t%d\n", max_nums[2]);
-	printf("the max left is :\t%d\n", max_nums[0]);
-	printf("the max right is :\t%d\n", max_nums[1]);
-	free(max_nums);
+	int nums[] = {-2,1,-3,4,-1,2,1,-5,4}, max_sum;
+	max_sum = maxSubArray(nums, 9);
+	printf("The max sum is %d\n", max_sum);
 	return EXIT_SUCCESS;
 }
 
+int maxSubArray(int* nums, int numsSize){
+  int *max_arr = find_max_sub_array(nums, 0, numsSize), max_sum;
+  max_sum = max_arr[2];
+  free(max_arr);
+  return max_sum;
+}
 int *find_max_sub_array (int* nums, int low, int high)
 {
   int *temp_arr = (int *)malloc((3) * sizeof(int));
