@@ -1,0 +1,2 @@
+add digit checking ability to the multiply strings algorithm
+	returns error if there's some char that is not digit
