@@ -24,7 +24,13 @@ char *multiply(char *num1, char *num2)
 	res_tmp = (char *)malloc((len1 + len2) * sizeof(char));
 	res_int_tmp = (int *)malloc((len1 + len2) * sizeof(int));/*sentinel values, not garbage*/
 	if (str1 == NULL || str2 == NULL || res_tmp == NULL || res_int_tmp == NULL)
+	{
+		free(str1);
+		free(str2);
+		free(res_tmp);
+		free(res_int_tmp);
 		return (NULL);
+	}
 	
 	/*reverse the strings for multiplication*/
 	for (i = 0; i < len1; i++)

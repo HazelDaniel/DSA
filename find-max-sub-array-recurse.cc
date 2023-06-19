@@ -42,11 +42,20 @@ int *find_max_sub_array (int* nums, int low, int high)
     right_arr = find_max_sub_array(nums, mid + 1, high);
     cross_arr = find_max_cross_sum(nums, low, mid , high);
     if (left_arr[2] >= right_arr[2] && left_arr[2] >= cross_arr[2])
-      return left_arr;
+		{
+				free(temp_arr), free(right_arr), free(cross_arr);
+				return left_arr;
+		}
     else if (right_arr[2] >= left_arr[2] && right_arr[2] >= cross_arr[2])
-      return right_arr;
+		{
+			free(temp_arr), free(left_arr), free(cross_arr);
+			return right_arr;
+		}
     else
+		{
+			free(temp_arr), free(right_arr), free(left_arr);
       return cross_arr;
+		}
   }
 	return temp_arr;
 }

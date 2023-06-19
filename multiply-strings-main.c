@@ -3,7 +3,7 @@
 int main(void)
 {
 	char *s1 = "3843884348";
-	char *s2 = "2";
+	char *s2 = "92";
 	char *res = NULL;
 
 	res = multiply(s1, s2);
