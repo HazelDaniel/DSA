@@ -23,7 +23,7 @@ int stack_full(stack_t *s)
 {
 	if (!s)
 		return (1);
-	if (s->top == s->size - 1)
+	if (s->top >= s->size - 1)
 		return (1);
 	return (0);
 }
@@ -37,10 +37,12 @@ int stack_empty(stack_t *s)
 	return (0);
 }
 
-void push(stack_t *s, int x)
+void push(stack_t **s, int x)
 {
-	if (!stack_full(s))
-		s->stack[++(s->top)] = x;
+	if (stack_full(*s))
+		*s = relocate_stack(*s, 10);
+	if (!stack_full(*s))
+		(*s)->stack[++(*s)->top] = x;
 	else
 		/*
 		 we call it stack underflow
@@ -74,17 +76,12 @@ void free_stack(stack_t *s)
 
 void print_stack(stack_t *s)
 {
-	stack_t *copy = stack_cpy(s);
-	int x = INT_MIN;
+	int i;
 
 	if (stack_empty(s))
-	{
-		puts("(nil)");
 		return;
-	}
-	for (x = pop(copy); x != INT_MIN; x = pop(copy))
-		printf("=>%d\n", x);
-	free_stack(copy);
+	for (i = s->top; i >= 0; i--)
+		printf("%d\n", s->stack[i]);
 }
 
 stack_t *stack_cpy(stack_t *s)
@@ -112,4 +109,32 @@ stack_t *stack_cpy(stack_t *s)
 	cpy_stack->size = s->size;
 
 	return (cpy_stack);
+}
+
+stack_t *relocate_stack(stack_t *old_stack, unsigned int size)
+{
+	stack_t *new_stack = (stack_t *)malloc(sizeof(stack_t));
+	int i = 0;
+
+	if (!old_stack || !new_stack)
+		return (NULL);
+
+	if (!size || size < 0)
+		return (old_stack);
+
+	new_stack->stack = malloc((old_stack->size + size) * sizeof(int));
+	new_stack->size = old_stack->size + size;
+	new_stack->top = old_stack->top;
+
+	if (!new_stack->stack)
+	{
+		free(new_stack);
+		free_stack(old_stack);
+		return(NULL);
+	}
+	for (i = 0; i < old_stack->size; i++)
+		new_stack->stack[i] = old_stack->stack[i];
+	free_stack(old_stack);
+	
+	return (new_stack);
 }

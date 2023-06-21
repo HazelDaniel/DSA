@@ -13,10 +13,11 @@ typedef struct {
 stack_t *create_stack(unsigned int size);
 int stack_full(stack_t *s);
 int stack_empty(stack_t *s);
-void push(stack_t *s, int x);
+void push(stack_t **s, int x);
 int pop(stack_t *s);
 void free_stack(stack_t *s);
 void print_stack(stack_t *s);
 stack_t *stack_cpy(stack_t *s);
+stack_t *relocate_stack(stack_t *old_stack, unsigned int size);
 
 #endif/*___STACK_*/
