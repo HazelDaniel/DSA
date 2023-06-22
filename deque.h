@@ -25,4 +25,5 @@ int dequeue_head(deque_t *d);
 void enqueue_head(deque_t **d, int x);
 int dequeue_tail(deque_t *d);
 void enqueue_tail(deque_t **d, int x);
+int deque_len(deque_t *d);
 #endif/*___DEQUE_*/

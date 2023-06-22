@@ -58,6 +58,7 @@ int main(void)
 	// enqueue_tail(&deque, 2);
 	// enqueue_head(&deque, 100);
 	random = dequeue_head(deque);
+	random = dequeue_head(deque);
 	printf("random is :%d\n", random);
 
 	print_deque(deque);
