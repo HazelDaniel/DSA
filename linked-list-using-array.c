@@ -21,16 +21,13 @@ int KENPHF_empty(KENPHF_list *list)
 
 int pop_KENPHF_list(KENPHF_list *list, int index)
 {
-	int prev = OOB, count = 0, i = 0;
+	int prev = OOB, count = 0, i = 0, j = OOB;
 
 	if (KENPHF_empty(list))
 		return (OOB);
 
 	if (count >= index)
-	{
 		index = count;
-		goto popping_list;
-	}
 
 	for (i = list->head; list->next[i] != OOB; )
 	{
@@ -40,23 +37,31 @@ int pop_KENPHF_list(KENPHF_list *list, int index)
 		i = list->next[i];
 		count++;
 	}
-popping_list:
-	if (count == index)
+	if (list->next[i] == OOB)
 	{
-		if (prev != OOB && i != OOB)
-		{
-			list->next[prev] = list->next[i];
-			if (list->next[i] != OOB)
-				list->prev[list->next[i]] = prev;
-		}
+		if (i == list->head)
+			list->head = OOB;
+		index = i;
+		if (list->prev[i] != OOB)
+			list->next[list->prev[i]] = OOB;
+		list->prev[i] = OOB;
 	}
 	else
 	{
+		if (i == list->head)
+		{
+			list->head = list->next[list->head];
+			list->prev[list->head] = OOB, list->next[i] = OOB;
+			return (i);
+		}
 		if (list->prev[i] != OOB)
-			list->next[list->prev[i]] = OOB;
+			list->next[list->prev[i]] = list->next[i];
+		if (list->next[i] != OOB)
+			list->prev[list->next[i]] = list->prev[i];
+		list->next[i] = OOB;
+		list->prev[i] = OOB;
 	}
-
-	return (i);
+	return (index);
 }
 
 int pop_KENPHF_heap(KENPHF_list *list, int index)
@@ -80,26 +85,18 @@ int pop_KENPHF_heap(KENPHF_list *list, int index)
 	if (list->next[i] == OOB)
 	{
 		if (i == list->free)
-		{
 			list->free = OOB;
-		}
+		index = i;
 		if (list->prev[i] != OOB)
 			list->next[list->prev[i]] = OOB;
 		list->prev[i] = OOB;
-		index = i;
 	}
 	else
 	{
 		if (i == list->free)
 		{
-			printf("free was :%d\n", list->free);
 			list->free = list->next[list->free];
-			list->prev[i] = OOB, list->next[i] = OOB;
-			printf("free is :%d\n", list->free);
-			printf("list->next[i] = %d\n", list->next[i]);
-			// list->next[list->free] = OOB, list->prev[list->free] = OOB;
-			// list->key[list->free] = OOB, list->free = OOB;
-
+			list->prev[list->free] = OOB, list->next[i] = OOB;
 			return (i);
 		}
 		if (list->prev[i] != OOB)
@@ -109,35 +106,7 @@ int pop_KENPHF_heap(KENPHF_list *list, int index)
 		list->next[i] = OOB;
 		list->prev[i] = OOB;
 	}
-	// printf("i is :%d\n", i);
-	printf("index will be :%d\n",index);
 	return (index);
-
-	// if (count == index)
-	// {
-	// 	if (prev == OOB)
-	// 	{
-	// 		j = list->free;
-	// 		list->free = list->next[list->free];
-	// 		list->prev[list->free] = OOB;
-	// 		return (j);
-	// 	}
-	// 	if (prev != OOB && i != OOB)
-	// 	{
-	// 		list->next[prev] = list->next[i];
-	// 	}
-	// 	if (list->next[i] != OOB)
-	// 	{
-	// 		list->prev[list->next[i]] = prev;
-	// 	}
-	// }
-	// else
-	// {
-	// 	if (list->prev[i] != OOB)
-	// 		list->next[list->prev[i]] = OOB;
-	// }
-
-	// return (i);
 }
 
 int push_KENPHF_heap(KENPHF_list *list, int index)
@@ -150,25 +119,53 @@ int push_KENPHF_heap(KENPHF_list *list, int index)
 	push_index = pop_KENPHF_list(list, index);
 	if (push_index == OOB)
 		return (OOB);
-	if (index == count)
-		goto pushing_heap;
 
 	for (i = list->free; list->next[i] != OOB; )
 	{
-		if (count == index - 1)
+		if (count == index)
 			break;
 		prev = i;
 		i = list->next[i];
 		count++;
 	}
 pushing_heap:
-	if (count == 0)
-		list->next[push_index] = OOB;
+	if (KENPHF_empty(list))
+	{
+		list->free = push_index;
+		list->prev[list->free] = OOB, list->next[list->free] = OOB;
+		return (push_index);
+	}
+	if (i == list->free)
+	{
+		if (index > 0)
+		{
+			list->next[list->free] = push_index;
+			list->prev[push_index] = list->free;
+		}
+		else
+		{
+			list->next[push_index] = list->free;
+			list->prev[list->free] = push_index;
+			list->free = push_index;
+		}
+	}
 	else
-		list->next[push_index] = list->next[i];
-	list->free = push_index;
-	if (list->next[i] != OOB)
-		list->prev[list->next[i]] = push_index;
+	{
+		if (count < index)
+		{
+			if (i != OOB)
+				list->next[i] = push_index;
+			list->next[push_index] = OOB;
+			list->prev[push_index] = i;
+			return (push_index);
+		}
+		list->next[push_index] = list->next[prev];
+		if (i != OOB)
+			list->prev[i] = push_index;
+		if (prev != OOB)
+			list->next[prev] = push_index;
+		list->prev[push_index] = prev;
+	}
 	return (push_index);
 }
 
@@ -179,7 +176,6 @@ int push_KENPHF_list(KENPHF_list *list, int index)
 	if (count >= index)
 		index = count;
 
-	// printf("the size of the list is :%d\n", KENPHF_size(list));
 	push_index = pop_KENPHF_heap(list, index);
 	if (push_index == OOB)
 		return (OOB);
@@ -193,7 +189,6 @@ int push_KENPHF_list(KENPHF_list *list, int index)
 		count++;
 	}
 pushing_list:
-	// printf("next index position is :%d\n", i);
 	if (KENPHF_empty(list))
 	{
 		list->head = push_index;
@@ -204,9 +199,6 @@ pushing_list:
 	{
 		if (index > 0)
 		{
-			// printf("head was at index :%d\n", list->head);
-			// printf("push index is :%d\n", push_index);
-			// printf("i is :%d\n",i);
 			list->next[list->head] = push_index;
 			list->prev[push_index] = list->head;
 		}
@@ -219,9 +211,19 @@ pushing_list:
 	}
 	else
 	{
+		if (count < index)
+		{
+			if (i != OOB)
+				list->next[i] = push_index;
+			list->next[push_index] = OOB;
+			list->prev[push_index] = i;
+			return (push_index);
+		}
 		list->next[push_index] = list->next[prev];
-		if (list->next[prev] != OOB)
-			list->prev[list->next[prev]] = push_index;
+		if (i != OOB)
+			list->prev[i] = push_index;
+		if (prev != OOB)
+			list->next[prev] = push_index;
 		list->prev[push_index] = prev;
 	}
 	return (push_index);
@@ -300,7 +302,6 @@ unsigned int KENPHF_size(KENPHF_list *list)
 	{
 		for (i = list->head; i != OOB; )
 		{
-			// puts("list");
 			i = list->next[i];
 			used++;
 		}
@@ -309,7 +310,6 @@ unsigned int KENPHF_size(KENPHF_list *list)
 	{
 		for (j = list->free; j != OOB; )
 		{
-			// puts("free");
 			j = list->next[j];
 			unused++;
 		}
@@ -383,7 +383,6 @@ void print_KENPHF_list(KENPHF_list *list)
 		printf("=>%d\n", list->key[i]);
 		i = list->next[i];
 	}
-	printf("last index is :%d\n", i);
 }
 
 void print_KENPHF_list_virtual(KENPHF_list *list)
