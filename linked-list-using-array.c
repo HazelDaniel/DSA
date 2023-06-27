@@ -127,7 +127,7 @@ int push_KENPHF_heap(KENPHF_list *list, int index)
 		count++;
 	}
 pushing_heap:
-	if (KENPHF_empty(list))
+	if (KENPHF_full(list))
 	{
 		list->free = push_index;
 		list->prev[list->free] = OOB, list->next[list->free] = OOB;
@@ -262,36 +262,33 @@ KENPHF_list *create_KENPHF(unsigned int size)
 	return (new_list);
 }
 
-void extend_KENPHF(KENPHF_list **list_ptr, unsigned int size)
+KENPHF_list *extend_KENPHF(KENPHF_list *list, unsigned int size)
 {
-	KENPHF_list *current = *list_ptr, *new;
-	int old_size = 0, i, j;
+	KENPHF_list  *new;
+	int old_size = 0, i = 0, j = 0;
 
-	if (!current)
+	if (!list)
 	{
-		current = create_KENPHF(size);
-		*list_ptr = current;
-		return;
+		list = create_KENPHF(size);
+		return (list);
 	}
-	old_size = KENPHF_size(current);
+	old_size = KENPHF_size(list);
 	new = create_KENPHF(size + old_size);
 	if (!new)
 	{
-		free_KENPHF_list(&current);
-		return;
+		free_KENPHF_list(&list);
+		return (NULL);
 	}
-	new->key = current->key, new->head = current->head;
-	new->free = current->free;
+	new->key = list->key, new->head = list->head;
+	new->free = list->free;
 	for (i = 0; i < old_size; i++)
 	{
-		if (new->next[i] == OOB)
-			j = i;
-		new->key[i] = current->key[i], new->next[i] = current->next[i];
-		new->prev[i] = current->prev[i];
+		new->key[i] = list->key[i], new->next[i] = list->next[i];
+		new->prev[i] = list->prev[i];
 	}
-	new->next[j] = old_size;
-	new->prev[old_size] = j;
-	*list_ptr = new;
+	new->free = i;
+	new->prev[new->free] = OOB;
+	return (new);
 }
 
 unsigned int KENPHF_size(KENPHF_list *list)
@@ -338,25 +335,25 @@ int free_KENPHF(KENPHF_list *list, int index)
 	return (i);
 }
 
-int KENPHF_insert(KENPHF_list *list, int index, int value)
+int KENPHF_insert(KENPHF_list **list_ptr, int index, int value)
 {
-	int i;
+	int i = OOB;
+	KENPHF_list *list = *list_ptr;
 
 	if (KENPHF_full(list))
-		extend_KENPHF(&list, 100);
+		*list_ptr = extend_KENPHF(list, 3);
 
 	i = alloc_KENPHF(list, index);
 	if (i != OOB)
 		list->key[i] = value;
-	else
-		return (i);
 
 	return (i);
 }
 
-int KENPHF_delete(KENPHF_list *list, int index)
+int KENPHF_delete(KENPHF_list **list_ptr, int index)
 {
-	int i;
+	int i = OOB;
+	KENPHF_list *list = *list_ptr;
 
 	if (KENPHF_empty(list))
 		return (OOB);
@@ -364,10 +361,8 @@ int KENPHF_delete(KENPHF_list *list, int index)
 	i = free_KENPHF(list, index);
 	if (i != OOB)
 		list->key[i] = OOB;
-	else
-		return (i);
 
-	return (1);
+	return (i);
 }
 
 void print_KENPHF_list(KENPHF_list *list)
