@@ -27,6 +27,7 @@ int main(void)
 	i = KENPHF_insert(&list, 1, 404);
 	i = KENPHF_insert(&list, 10, 130);
 	i = KENPHF_insert(&list, 1, 194);
+	i = KENPHF_insert(&list, 0, 777);
 	print_KENPHF_list(list);
 	print_KENPHF_list_virtual(list);
 	printf("the size is :%d\n", KENPHF_size(list));

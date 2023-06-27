@@ -288,6 +288,10 @@ KENPHF_list *extend_KENPHF(KENPHF_list *list, unsigned int size)
 	}
 	new->free = i;
 	new->prev[new->free] = OOB;
+	// BUG:
+	// this couldn't free without affecting the new.
+	// fix it
+	// free_KENPHF_list(&list);
 	return (new);
 }
 
@@ -341,7 +345,7 @@ int KENPHF_insert(KENPHF_list **list_ptr, int index, int value)
 	KENPHF_list *list = *list_ptr;
 
 	if (KENPHF_full(list))
-		*list_ptr = extend_KENPHF(list, 3);
+		*list_ptr = extend_KENPHF(list, EXT_SIZE);
 
 	i = alloc_KENPHF(list, index);
 	if (i != OOB)

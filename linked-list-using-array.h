@@ -6,6 +6,7 @@
 #include <string.h>
 
 #define OOB (-1)
+#define EXT_SIZE (3)
 
 typedef struct {
 	int head;
