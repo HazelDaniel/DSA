@@ -41,7 +41,6 @@ int pop_KENPHF_list(KENPHF_list *list, int index)
 	{
 		if (i == list->head)
 			list->head = OOB;
-		index = i;
 		if (list->prev[i] != OOB)
 			list->next[list->prev[i]] = OOB;
 		list->prev[i] = OOB;
@@ -54,14 +53,14 @@ int pop_KENPHF_list(KENPHF_list *list, int index)
 			list->prev[list->head] = OOB, list->next[i] = OOB;
 			return (i);
 		}
-		if (list->prev[i] != OOB)
-			list->next[list->prev[i]] = list->next[i];
+		if (prev != OOB)
+			list->next[prev] = list->next[i];
 		if (list->next[i] != OOB)
 			list->prev[list->next[i]] = list->prev[i];
 		list->next[i] = OOB;
 		list->prev[i] = OOB;
 	}
-	return (index);
+	return (i);
 }
 
 int pop_KENPHF_heap(KENPHF_list *list, int index)
@@ -86,7 +85,6 @@ int pop_KENPHF_heap(KENPHF_list *list, int index)
 	{
 		if (i == list->free)
 			list->free = OOB;
-		index = i;
 		if (list->prev[i] != OOB)
 			list->next[list->prev[i]] = OOB;
 		list->prev[i] = OOB;
@@ -99,14 +97,14 @@ int pop_KENPHF_heap(KENPHF_list *list, int index)
 			list->prev[list->free] = OOB, list->next[i] = OOB;
 			return (i);
 		}
-		if (list->prev[i] != OOB)
-			list->next[list->prev[i]] = list->next[i];
+		if (prev != OOB)
+			list->next[prev] = list->next[i];
 		if (list->next[i] != OOB)
 			list->prev[list->next[i]] = list->prev[i];
 		list->next[i] = OOB;
 		list->prev[i] = OOB;
 	}
-	return (index);
+	return (i);
 }
 
 int push_KENPHF_heap(KENPHF_list *list, int index)
@@ -177,6 +175,7 @@ int push_KENPHF_list(KENPHF_list *list, int index)
 		index = count;
 
 	push_index = pop_KENPHF_heap(list, index);
+		// printf("push index is :%d\t while index is :%d\n", push_index, index);
 	if (push_index == OOB)
 		return (OOB);
 
@@ -199,6 +198,9 @@ pushing_list:
 	{
 		if (index > 0)
 		{
+			list->next[push_index] = list->next[list->head];
+			if (list->next[list->head] != OOB)
+				list->prev[list->next[list->head]] = push_index;
 			list->next[list->head] = push_index;
 			list->prev[push_index] = list->head;
 		}
@@ -356,8 +358,8 @@ int KENPHF_delete(KENPHF_list *list, int index)
 {
 	int i;
 
-	if (KENPHF_full(list))
-		extend_KENPHF(&list, 100);
+	if (KENPHF_empty(list))
+		return (OOB);
 
 	i = free_KENPHF(list, index);
 	if (i != OOB)
