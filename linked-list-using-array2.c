@@ -11,7 +11,7 @@ int push_KENPHF_heap(KENPHF_list *list, int index)
 	if (push_index == OOB)
 		return (OOB);
 
-	for (i = list->free; list->next[i] != OOB; )
+	for (i = list->free; i != OOB && list->next[i] != OOB; )
 	{
 		if (count == index)
 			break;
@@ -71,7 +71,7 @@ int push_KENPHF_list(KENPHF_list *list, int index)
 	if (push_index == OOB)
 		return (OOB);
 
-	for (i = list->head; list->next[i] != OOB; )
+	for (i = list->head; i != OOB && list->next[i] != OOB; )
 	{
 		if (count == index)
 			break;
