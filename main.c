@@ -31,6 +31,7 @@ int main(void)
 	print_KENPHF_list(list);
 	print_KENPHF_list_virtual(list);
 	printf("the size is :%d\n", KENPHF_size(list));
+	free_KENPHF_list(&list);
 
 	return (0);
 }

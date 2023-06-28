@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <string.h>
+#include "data-structures.h"
 
 #define OOB (-1)
 #define EXT_SIZE (3)
@@ -11,10 +12,10 @@
 typedef struct {
 	int head;
 	int free;
-	int size;
+	unsigned int size;
 	int *key;
-	int *next;
-	int *prev;
+	unsigned int *next;
+	unsigned int *prev;
 } KENPHF_list;
 
 int KENPHF_full(KENPHF_list *list);
@@ -24,7 +25,7 @@ int pop_KENPHF_heap(KENPHF_list *list, int index);
 int push_KENPHF_heap(KENPHF_list *list, int index);
 int push_KENPHF_list(KENPHF_list *list, int index);
 KENPHF_list *create_KENPHF(unsigned int size);
-KENPHF_list *extend_KENPHF(KENPHF_list *list, unsigned int size);
+void extend_KENPHF(KENPHF_list **list_ptr, unsigned int size);
 unsigned int KENPHF_size(KENPHF_list *list);
 int free_KENPHF(KENPHF_list *list, int index);
 int alloc_KENPHF(KENPHF_list *list, int index);
