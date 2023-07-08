@@ -28,12 +28,13 @@ int main(void)
 	i = KENPHF_insert(&list, 10, 130);
 	i = KENPHF_insert(&list, 1, 194);
 	i = KENPHF_insert(&list, 0, 777);
-	print_KENPHF_list(list);
-	i = KENPHF_delete(&list, 9);
 	i = KENPHF_insert(&list, 0, 660);
+	i = KENPHF_insert(&list, 0, 668);
+	i = KENPHF_insert(&list, 0, 222);
+	i = KENPHF_insert(&list, 0, 225);
+	i = KENPHF_insert(&list, 0, 707);
 	puts("==============>");
 	print_KENPHF_list(list);
-	// print_KENPHF_list_virtual(list);
 	printf("the size is :%d\n", KENPHF_size(list));
 	free_KENPHF_list(&list);
 

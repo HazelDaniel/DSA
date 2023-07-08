@@ -7,7 +7,7 @@
 #include "data-structures.h"
 
 #define OOB (-1)
-#define EXT_SIZE (3)
+#define EXT_SIZE (10)
 
 typedef struct {
 	int head;
