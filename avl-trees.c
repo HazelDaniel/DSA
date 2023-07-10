@@ -130,7 +130,37 @@ avl_node_t *avl_min(avl_node_t *root)
 	while (root && root->left)
 		root = root->left;
 
-	return (root->left);
+	return (root);
+}
+
+/**
+ * in_order_successor - a function that returns the
+ * node after a specified node when traversing in an in-order
+ * manner
+ * @root: the subject node
+ * @real_root: the root of the avl tree
+ * Return: avl_node_t *
+ **/
+avl_node_t *in_order_successor(avl_node_t *root, avl_node_t *real_root)
+{
+	avl_node_t *successor, *ancestor;
+
+	if (root->right)
+	{
+		successor = avl_min(root->right);
+		return (successor);
+	}
+
+	ancestor = real_root;
+	while (ancestor != root)
+	{
+		if (root->data < ancestor->data)
+			successor = ancestor, ancestor = ancestor->left;
+		else
+			ancestor = ancestor->right;
+	}
+
+	return (successor);
 }
 
 /**
@@ -186,3 +216,17 @@ void insert_avl_node(avl_node_t **root, unsigned long data)
 	(*root)->height = get_avl_height(*root);
 	return;
 }
+
+/**
+ * delete_avl_node - a function that deletes a node
+ * with a specified value from the avl tree
+ * @root: the root node of the current sub-tree
+ * data: the value of the node to be deleted
+ * @real_root: the topmost root of the tree
+ * Return: avl_node_t *
+ **/
+avl_node_t *delete_avl_node(avl_node_t **root, unsigned long int data, avl_node_t *real_root)
+{
+	return (0);
+}
+

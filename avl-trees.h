@@ -9,10 +9,10 @@
 #define POSTORDER (2)
 
 typedef struct Avl_node {
+	unsigned long int data; // not yet augmented for hash maps for duplicates
 	unsigned int height;
 	struct Avl_node *left;
 	struct Avl_node *right;
-	unsigned long int data; // not yet augmented for hash maps for duplicates
 } avl_node_t;
 
 avl_node_t *create_avl_node(unsigned long int data);
@@ -21,10 +21,10 @@ unsigned int balance_factor(avl_node_t *root);
 avl_node_t *rotate_left(avl_node_t **root);
 avl_node_t *rotate_right(avl_node_t **root);
 avl_node_t *avl_min(avl_node_t *root);
-avl_node_t *in_order_successor(avl_node_t *root);
+avl_node_t *in_order_successor(avl_node_t *root, avl_node_t *real_root);
 avl_node_t *pre_order_successor(avl_node_t *root);
 avl_node_t *post_order_successor(avl_node_t *root);
 void insert_avl_node(avl_node_t **root, unsigned long int data);
-avl_node_t *delete_avl_node(avl_node_t **root, unsigned long int data);
+avl_node_t *delete_avl_node(avl_node_t **root, unsigned long int data, avl_node_t *real_root);
 void print_avl_tree(avl_node_t *root, int mode);
 #endif/*___AVL_TREES_*/
