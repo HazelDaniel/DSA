@@ -115,6 +115,25 @@ avl_node_t *rotate_right(avl_node_t **root)
 }
 
 /**
+ * avl_min - a function that finds the minimum node
+ * in a sub-tree
+ * @root: the root node of the sub-tree
+ * Return: avl_node_t *
+ **/
+avl_node_t *avl_min(avl_node_t *root)
+{
+	avl_node_t *curr;
+
+	if (!root || !root->left)
+		return (root);
+
+	while (root && root->left)
+		root = root->left;
+
+	return (root->left);
+}
+
+/**
  * insert_avl_node - a function that inserts a node into
  * an avl tree
  * @root: the root of the avl tree
