@@ -1,0 +1,44 @@
+RB-INSERT(T, x, value):
+	y = T.root
+	x.p = T.nil
+	x.value = value
+	if (y):
+		while (y):
+			if value > y.value:
+				if (!y->right):
+					y->right = x
+					x.p = y
+				else:
+					y = y.right
+			else:
+				if (!y->left):
+					y->left = x
+					x.p = y
+				else:
+					y = y.left
+	else:
+		T.root = x
+	x.left = T.nil
+	x.right = T.nil
+	RB-INSERT-FIXUP(T, x)
+
+
+RB-INSERT-FIXUP(T, z):
+	while (z.p.color == RED):
+		if (z.p = z.p.p.left):
+			y = z.p.p.right
+			if (y.color == RED):
+				z.p.color = BLACK
+				y.color = BLACK
+				z.p.p.color = RED
+				z = z.p.p
+			else:
+				if (z = z.p.right)
+					z = z.p
+					LEFT-ROTATE(T, z)
+				z.p.color = BLACK
+				z.p.p.color = RED
+				RIGHT-ROTATE(T, z.p.p)
+		else:
+		REVERSE CASE BUT WITH LEFT AND RIGHT INTERCHANGED//
+	
