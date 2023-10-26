@@ -1,0 +1,18 @@
+BFS(G, s): // given a graph G and a starting vertex s
+	s.color = GREY
+	s.pi = Nil
+	s.d = 0
+	Q = Nil
+	enqueue(Q, s)
+	for v in G.V - {s}: // searching through the list of vertices in the graph that is not s
+		v.color = WHITE
+		v.d = infinity
+		v.pi = Nil
+	
+	while (u = enqueue(Q, s)): // every vertex in the queue is colored GREY
+		for (v in G.adj[u]):
+			if (v.color == WHITE):
+				v.pi = u
+				v.d = u.d + 1
+				v.color = GREY
+		u.color = BLACK
