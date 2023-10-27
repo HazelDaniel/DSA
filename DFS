@@ -1,0 +1,22 @@
+DFS(G):
+	for vertex in G.V:
+		vertex.color = white
+		vertex.d = infinity
+		vertex.f = infinity
+		vertex.pi = NULL
+	time = 0
+	for vertex in G.V:
+		if vertex.color == WHITE:
+			DFS-VISIT(G, vertex)
+
+DFS-VISIT(G, u):
+	u.color = GREY
+	time++
+	u.d = time
+	for v in G.adj[u]:
+		if v.color == WHITE:
+		v.pi = u
+		DFS-VISIT(G, v)
+	time++
+	u.f = time
+	u.color = BLACK
