@@ -53,7 +53,7 @@ class DiGraph:
     def add_edge(self, a, b):
         u = vertex_map.get(a, None)
         v = vertex_map.get(b, None)
-        if not a or not b:
+        if not u or not v:
             print("cannot add an edge between non-existent vertices")
             return
         # print(f"adding edge : {a} => {b}")
