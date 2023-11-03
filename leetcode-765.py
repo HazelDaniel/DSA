@@ -20,11 +20,11 @@ class Solution(object):
 
         swaps = 0
         row_ind = 0
-        while (row_ind <= len(matrix) // 2 + 1):
+        while (row_ind <= len(matrix) // 2):
             col_ind = 0
-            while (col_ind <= len(matrix[row_ind]) // 2 + 1):
+            while (col_ind <= len(matrix[row_ind]) // 2):
                 if ((abs(col_ind - row_ind) == 1) and
-                        not (matrix[row_ind][col_ind] and
+                        not (matrix[row_ind][col_ind] or
                              matrix[col_ind][row_ind])):
                     matrix[row_ind][col_ind] = 1
                     matrix[col_ind][row_ind] = 1
@@ -32,3 +32,6 @@ class Solution(object):
                 col_ind += 1
             row_ind += 1
         return (swaps - 1)
+
+
+print(Solution().min_swaps([2, 0, 5, 4, 3, 1]))
