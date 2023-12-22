@@ -16,7 +16,7 @@ arr = [-1, 0, 1, 0]
 
 
 class Solution:
-    def two_sum(self, array, target, acc_ind, start, end, super_set):
+    def two_sum(self, array, target, acc_ind, end, super_set):
         """this is the two sum approach"""
         i, j = 0 if acc_ind else 1, end
         acc = array[acc_ind]
@@ -47,7 +47,7 @@ class Solution:
         i, max = 0, len(nums) - 1
         j = max
         while i <= j - 2:
-            self.two_sum(array, 0, i, i + 1, j, super_set)
+            self.two_sum(array, 0, i, j, super_set)
             i += 1
         return list(super_set)
 
