@@ -2,3 +2,6 @@ GCompiled
 node_modules
 package.json
 *notes
+.idea
+ideas
+tests
