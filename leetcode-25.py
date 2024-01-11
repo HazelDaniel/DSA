@@ -31,54 +31,44 @@ class Solution:
         mod_count = 0
         pass_hash = defaultdict(list)
 
-        # def get_len(self, stop=-1):
-        #     curr = self
-        #     count = 0
-        #     while curr:
-        #         if stop != - 1 and count == stop:
-        #             return count
-        #         count += 1
-        #         curr = curr.next
-        #     return count
+        def get_len(self, stop=-1):
+            curr = self
+            count = 0
+            while curr:
+                if stop != - 1 and count == stop:
+                    return count
+                count += 1
+                curr = curr.next
+            return count
 
-        if head.length(k) < k:
+        ListNode.length = get_len
+        if head.length(k) < k or k == 1:
             return head
         curr = head
         prev = None
         while curr:
             pass_hash[pass_count].append(curr)
-            # print(f"mod count: {mod_count}, pass count: {pass_count}")
             if not mod_count and pass_count:
                 if prev:
                     prev.next = None
             if mod_count == k - 1:
                 pass_count += 1
-                # if prev:
-                #     print(f"blocking point is {prev}")
             mod_count = (mod_count + 1) % k
             prev = curr
             curr = curr.next
         x = pass_count
         prev = None
         tail = None
-        print(pass_hash)
-        # print("--------")
         while x >= 0:
-            # print(f"prev was {prev}")
             tmp = prev
-            # pass_hash[x][0]
             if not pass_hash[x]:
-                x -= 1
+                x += 1
                 continue
             if x == pass_count and pass_hash[x][0].length(k) < k:
                 prev, tail = pass_hash[x][0], pass_hash[x][-1]
             else:
                 prev, tail = self.reverse_list(pass_hash[x][0])
-            # print("<>>><><><><><><>")
-            # print_list(prev)
-            # print("<>>><><><><><><>")
             tail.next = tmp
-            # if prev:
             if not x:
                 head = prev
             x -= 1
